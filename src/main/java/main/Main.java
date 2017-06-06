@@ -1,17 +1,24 @@
 package main;
 
+import accounts.AccountService;
+import accounts.User;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import servlets.HelloServlet;
+import servlets.SignInServlet;
+import servlets.SignUpServlet;
 
 public class Main {
     public static void main(String[] args) {
+        AccountService accountService = new AccountService();
+        accountService.addNewUser(new User("admin", "admin", "admin@gmail.com"));
+
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.addServlet(new ServletHolder(new HelloServlet()), "/helloservlet");
+        context.addServlet(new ServletHolder(new SignInServlet(accountService)), "/signin");
+        context.addServlet(new ServletHolder(new SignUpServlet(accountService)), "/signup");
 
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setResourceBase("src/main/resources/html");
