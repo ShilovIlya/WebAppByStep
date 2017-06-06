@@ -2,6 +2,7 @@ package main;
 
 import accounts.AccountService;
 import accounts.User;
+import db.DBService;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -13,6 +14,9 @@ import servlets.SignUpServlet;
 
 public class Main {
     public static void main(String[] args) {
+        DBService service = new DBService();
+        service.printConnectInfo();
+
         AccountService accountService = new AccountService();
         accountService.addNewUser(new User("admin", "admin", "admin@gmail.com"));
 
@@ -33,7 +37,7 @@ public class Main {
             server.start();
             server.join();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }
