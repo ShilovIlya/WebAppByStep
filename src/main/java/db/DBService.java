@@ -7,20 +7,40 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Class for encapsulating database connection management
+ */
 public class DBService {
     private final Connection connection;
 
     public DBService() {
         this.connection = getH2Connection();
+        try {
+            UsersDAO dao = new UsersDAO(connection);
+            dao.createTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void addUser(User user) {
+    /**
+     * Method for saving new user to table users.
+     * Create new table and try insert new user.
+     * Manage commit and rollback.
+     *
+     * @param login - user login
+     * @param password - user password
+     * @param email - user email
+     * @return new user id
+     */
+    public long addUser(String login, String password, String email) {
+        long userId = -1;
         try {
             connection.setAutoCommit(false);
             UsersDAO dao = new UsersDAO(connection);
-            dao.createTable();
-            dao.insertUser(user.getLogin(), user.getPassword(), user.getEmail());
+            dao.insertUser(login, password, email);
             connection.commit();
+            userId = dao.getIdByLogin(login);
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -33,6 +53,27 @@ public class DBService {
             } catch (SQLException ignore) {
             }
         }
+        return userId;
+    }
+
+    public User getUserByLogin(String login) {
+        try {
+            UsersDAO usersDAO = new UsersDAO(connection);
+            return usersDAO.getUserByLogin(login);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public User getUserById(long id) {
+        try {
+            UsersDAO usersDAO = new UsersDAO(connection);
+            return usersDAO.getUserById(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void printConnectInfo() {

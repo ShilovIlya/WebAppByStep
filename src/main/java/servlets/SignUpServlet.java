@@ -36,9 +36,9 @@ public class SignUpServlet extends HttpServlet{
             return;
         }
 
-        User newUser = new User(login, password, email);
-        accountService.addNewUser(newUser);
-        accountService.addSession(request.getSession().getId(), user);
+        long id = accountService.addNewUser(login, password, email);
+        User newUser = new User(id, login, password, email);
+        accountService.addSession(request.getSession().getId(), newUser);
         Gson gson = new Gson();
         String json = gson.toJson(newUser);
         response.getWriter().print(json);

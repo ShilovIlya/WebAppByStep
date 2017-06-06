@@ -1,24 +1,25 @@
 package accounts;
 
+import db.DBService;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class AccountService {
-    private final Map<String, User> loginToUser;
+    DBService dbService;
     private final Map<String, User> sessionIdToUser;
 
-
-    public AccountService() {
-        this.loginToUser = new HashMap<>();
+    public AccountService(DBService dbService) {
+        this.dbService = dbService;
         this.sessionIdToUser = new HashMap<>();
     }
 
-    public void addNewUser(User user) {
-        loginToUser.put(user.getLogin(), user);
+    public long addNewUser(String login, String password, String email) {
+        return dbService.addUser(login, password, email);
     }
 
     public User getUserByLogin(String login) {
-        return loginToUser.get(login);
+        return dbService.getUserByLogin(login);
     }
 
     public User getUserBySessionId(String sessionId) {

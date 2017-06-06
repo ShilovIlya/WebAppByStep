@@ -14,11 +14,11 @@ import servlets.SignUpServlet;
 
 public class Main {
     public static void main(String[] args) {
-        DBService service = new DBService();
-        service.printConnectInfo();
+        DBService dbService = new DBService();
+        dbService.printConnectInfo();
 
-        AccountService accountService = new AccountService();
-        accountService.addNewUser(new User("admin", "admin", "admin@gmail.com"));
+        AccountService accountService = new AccountService(dbService);
+        accountService.addNewUser("admin", "admin", "admin@gmail.com");
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(new SignInServlet(accountService)), "/signin");

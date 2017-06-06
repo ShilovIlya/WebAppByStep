@@ -1,10 +1,15 @@
 package db;
 
+import dao.Handler;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * This class executes updates and queries.
+ */
 public class Executor {
     private final Connection connection;
 
@@ -18,10 +23,20 @@ public class Executor {
         statement.close();
     }
 
-    public String execQuery(String query) throws SQLException {
+    /**
+     * Method for taking data from database
+     *
+     * @param query - query for executing
+     * @return string representation of result set
+     * @throws SQLException
+     */
+    public <T> T execQuery(String query, Handler<T> handler) throws SQLException {
         Statement statement = connection.createStatement();
         statement.execute(query);
         ResultSet resultSet = statement.getResultSet();
-        return resultSet.toString();
+        T result = handler.handle(resultSet);
+        resultSet.close();
+        statement.close();
+        return result;
     }
 }
