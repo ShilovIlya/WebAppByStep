@@ -1,7 +1,6 @@
-package dao;
+package jdbc.dao;
 
-import accounts.User;
-import db.Executor;
+import datasets.User;
 
 import java.sql.Connection;
 import java.sql.SQLException;

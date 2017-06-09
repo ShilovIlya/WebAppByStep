@@ -1,20 +1,21 @@
 package main;
 
-import accounts.AccountService;
-import accounts.User;
-import db.DBService;
+import jdbc.dbservice.JDBCService;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import services.AccountService;
+import services.DBService;
 import servlets.SignInServlet;
 import servlets.SignUpServlet;
 
 public class Main {
     public static void main(String[] args) {
-        DBService dbService = new DBService();
+//        JDBCService dbService = new JDBCService();
+        DBService dbService = new JDBCService();
         dbService.printConnectInfo();
 
         AccountService accountService = new AccountService(dbService);

@@ -1,7 +1,8 @@
-package db;
+package jdbc.dbservice;
 
-import accounts.User;
-import dao.UsersDAO;
+import datasets.User;
+import jdbc.dao.UsersDAO;
+import services.DBService;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,10 +11,10 @@ import java.sql.SQLException;
 /**
  * Class for encapsulating database connection management
  */
-public class DBService {
+public class JDBCService implements DBService {
     private final Connection connection;
 
-    public DBService() {
+    public JDBCService() {
         this.connection = getH2Connection();
         try {
             UsersDAO dao = new UsersDAO(connection);

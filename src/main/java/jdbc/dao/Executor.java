@@ -1,6 +1,4 @@
-package db;
-
-import dao.Handler;
+package jdbc.dao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
