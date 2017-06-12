@@ -19,6 +19,8 @@ public class JDBCService implements DBService {
         try {
             UsersDAO dao = new UsersDAO(connection);
             dao.createTable();
+            System.out.println(dao.selectAll());
+            System.out.println(dao.describeTable());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -60,6 +62,8 @@ public class JDBCService implements DBService {
     public User getUserByLogin(String login) {
         try {
             UsersDAO usersDAO = new UsersDAO(connection);
+            System.out.println(usersDAO.selectAll());
+            System.out.println(usersDAO.describeTable());
             return usersDAO.getUserByLogin(login);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -14,7 +14,6 @@ import servlets.SignUpServlet;
 
 public class Main {
     public static void main(String[] args) {
-//        JDBCService dbService = new JDBCService();
         DBService dbService = new JDBCService();
         dbService.printConnectInfo();
 
