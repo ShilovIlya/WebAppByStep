@@ -19,8 +19,8 @@ public class JDBCService implements DBService {
         try {
             UsersDAO dao = new UsersDAO(connection);
             dao.createTable();
-            System.out.println(dao.selectAll());
-            System.out.println(dao.describeTable());
+            dao.dropTable();
+            dao.createTable();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -42,13 +42,14 @@ public class JDBCService implements DBService {
             connection.setAutoCommit(false);
             UsersDAO dao = new UsersDAO(connection);
             dao.insertUser(login, password, email);
+            System.out.println("Hello JDBC " + dao.selectAll());
             connection.commit();
             userId = dao.getIdByLogin(login);
         } catch (SQLException e) {
+            e.printStackTrace();
             try {
                 connection.rollback();
             } catch (SQLException ex) {
-                System.out.println("Failed rollback in addUser method");
             }
         } finally {
             try {
@@ -79,6 +80,15 @@ public class JDBCService implements DBService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void cleanUp() {
+        UsersDAO dao = new UsersDAO(connection);
+        try {
+            dao.dropTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void printConnectInfo() {

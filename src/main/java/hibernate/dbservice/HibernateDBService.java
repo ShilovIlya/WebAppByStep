@@ -99,4 +99,8 @@ public class HibernateDBService implements DBService{
         ServiceRegistry serviceRegistry = builder.build();
         return configuration.buildSessionFactory(serviceRegistry);
     }
+
+    public void cleanUp() {
+        
+    }
 }

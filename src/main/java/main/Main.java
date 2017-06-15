@@ -18,8 +18,8 @@ public class Main {
         dbService.printConnectInfo();
 
         AccountService accountService = new AccountService(dbService);
-        accountService.addNewUser("admin", "admin", "admin@gmail.com");
-
+        long id = accountService.addNewUser("admin", "admin", "admin@gmail.com");
+        System.out.println("id of new user is " + id);
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(new SignInServlet(accountService)), "/signin");
         context.addServlet(new ServletHolder(new SignUpServlet(accountService)), "/signup");
@@ -33,6 +33,7 @@ public class Main {
         Server server = new Server(8880);
         server.setHandler(handlers);
 
+        dbService.cleanUp();
         try {
             server.start();
             server.join();

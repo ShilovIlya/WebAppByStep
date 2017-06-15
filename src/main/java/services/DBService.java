@@ -12,4 +12,6 @@ public interface DBService {
 
     public void printConnectInfo();
 
+    public void cleanUp();
+
 }

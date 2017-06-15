@@ -5,8 +5,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable{
-    private static final long serialVersionUID = -8706689714326239798L;
+public class User implements Serializable {
+    private static final long serialVersionUID = -8706689714326132798L;
 
     @Id
     @Column(name = "id")
@@ -21,6 +21,10 @@ public class User implements Serializable{
 
     @Column(name = "email")
     private String email;
+
+    public User() {
+
+    }
 
     public User(long id, String login, String password, String email) {
         setId(id);

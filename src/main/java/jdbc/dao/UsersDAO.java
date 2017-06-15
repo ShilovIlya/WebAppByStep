@@ -18,22 +18,28 @@ public class UsersDAO {
     public User getUserById(long id) throws SQLException {
         return executor.execQuery("select * from users where id=" + id,
                 resultSet -> new User(resultSet.getLong(0), resultSet.getString(1),
-                         resultSet.getString(2), resultSet.getString(3)));
+                        resultSet.getString(2), resultSet.getString(3)));
     }
 
-    public User getUserByLogin(String login) throws SQLException{
+    public User getUserByLogin(String login) throws SQLException {
         return executor.execQuery("select * from users where login=\"" + login + "\"",
                 resultSet -> new User(resultSet.getLong(0), resultSet.getString(1),
                         resultSet.getString(2), resultSet.getString(3)));
     }
 
-    public long getIdByLogin(String login) throws SQLException{
-        return executor.execQuery("select * from users where users.login='" + login + "')",
-                resultSet -> resultSet.getLong(0));
+    public long getIdByLogin(String login) throws SQLException {
+        return executor.execQuery("select * from users where login='" + login + "'",
+                (resultSet) -> {
+                    if (resultSet.next()) {
+                        return resultSet.getLong(1);
+                    } else {
+                     return -2L;
+                    }
+                });
     }
 
     public void insertUser(String login, String password, String email) throws SQLException {
-        executor.execUpdate("insert into users values ('" + login + "," + password + "," + email + "')");
+        executor.execUpdate("insert into users (login, password, email) values ('" + login + "','" + password + "','" + email + "')");
     }
 
     public void createTable() throws SQLException {
@@ -42,14 +48,17 @@ public class UsersDAO {
     }
 
     public String selectAll() throws SQLException {
-        return executor.execQuery("select * from users",(resultSet) -> {
+        return executor.execQuery("select * from users", (resultSet) -> {
             StringBuilder result = new StringBuilder("");
             while (resultSet.next()) {
-                result.append(resultSet.getInt("id"));
-                result.append(resultSet.getString("login"));
-                result.append(resultSet.getString("password"));
-                result.append(resultSet.getString("email"));
-                result.append("\"");
+                result.append(resultSet.getInt("id"))
+                        .append(" ")
+                        .append(resultSet.getString("login"))
+                        .append(" ")
+                        .append(resultSet.getString("password"))
+                        .append(" ")
+                        .append(resultSet.getString("email"))
+                        .append(" ; ");
             }
             return result.toString();
         });
@@ -59,10 +68,11 @@ public class UsersDAO {
         return executor.execQuery("show columns from users", (resultSet) -> {
             StringBuilder result = new StringBuilder("");
             while (resultSet.next()) {
-                result.append(resultSet.getInt("id"));
-                result.append(resultSet.getString("login"));
-                result.append(resultSet.getString("password"));
-                result.append(resultSet.getString("email"));
+
+                result.append(resultSet.getBigDecimal(0));
+                result.append(resultSet.getString(2));
+                result.append(resultSet.getString(3));
+                result.append(resultSet.getString(4));
                 result.append("\"");
             }
             return result.toString();
