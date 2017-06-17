@@ -64,9 +64,9 @@ public class JDBCService implements DBService {
     public User getUserByLogin(String login) {
         try {
             UsersDAO usersDAO = new UsersDAO(connection);
-            System.out.println(usersDAO.selectAll());
             return usersDAO.getUserByLogin(login);
         } catch (SQLException e) {
+            //TODO: add logger
             System.out.println("Login is not exist.");
             e.printStackTrace();
         }

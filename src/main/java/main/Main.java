@@ -1,6 +1,6 @@
 package main;
 
-import jdbc.dbservice.JDBCService;
+import hibernate.dbservice.HibernateDBService;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -14,11 +14,9 @@ import servlets.SignUpServlet;
 
 public class Main {
     public static void main(String[] args) {
-        DBService dbService = new JDBCService();
+//        DBService dbService = new JDBCService();
+        DBService dbService = new HibernateDBService();
         dbService.printConnectInfo();
-        dbService.initialize();
-        dbService.cleanUp();
-        dbService.initialize();
 
         AccountService accountService = new AccountService(dbService);
         Long id = accountService.addNewUser("admin", "admin", "admin@gmail.com");

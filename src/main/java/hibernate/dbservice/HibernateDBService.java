@@ -24,7 +24,6 @@ public  class HibernateDBService implements DBService{
     public HibernateDBService() {
         Configuration configuration = getH2Configuration();
         this.sessionFactory = createSessionFactory(configuration);
-
     }
 
     public long addUser(String login, String password, String email) {
@@ -43,29 +42,29 @@ public  class HibernateDBService implements DBService{
     }
 
     public User getUserByLogin(String login) {
-        User user = null;
         try {
             Session session = sessionFactory.openSession();
             UsersDAO dao = new UsersDAO(session);
-            user = dao.getUserByLogin(login);
+            User user = dao.getUserByLogin(login);
             session.close();
+            return user;
         } catch (HibernateException e) {
             e.printStackTrace();
         }
-        return user;
+        return null;
     }
 
     public User getUserById(long id) {
-        User user = null;
         try {
             Session session = sessionFactory.openSession();
             UsersDAO dao = new UsersDAO(session);
-            user = dao.getUserById(id);
+            User user = dao.getUserById(id);
             session.close();
+            return user;
         } catch (HibernateException e) {
             e.printStackTrace();
         }
-        return user;
+        return null;
     }
 
     public void printConnectInfo() {
@@ -87,6 +86,7 @@ public  class HibernateDBService implements DBService{
 
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         configuration.setProperty("hibernate.connection.driver_class", "org.h2.Driver");
+        configuration.setProperty("hibernate.connection.url", "jdbc:h2:./test");
         configuration.setProperty("hibernate.connection.username", "wais");
         configuration.setProperty("hibernate.connection.password", "wais");
         configuration.setProperty("hibernate.show_sql", hibernate_show_sql);
@@ -96,6 +96,7 @@ public  class HibernateDBService implements DBService{
 
     private static SessionFactory createSessionFactory(Configuration configuration) {
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+        builder.applySettings(configuration.getProperties());
         ServiceRegistry serviceRegistry = builder.build();
         return configuration.buildSessionFactory(serviceRegistry);
     }
