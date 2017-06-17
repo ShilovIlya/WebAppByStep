@@ -15,7 +15,7 @@ import services.DBService;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class HibernateDBService implements DBService{
+public  class HibernateDBService implements DBService{
     private static final String hibernate_show_sql = "true";
     private static final String hibernate_hbm2ddl_auto = "create";
 
@@ -101,6 +101,10 @@ public class HibernateDBService implements DBService{
     }
 
     public void cleanUp() {
-        
+
+    }
+
+    public void initialize() {
+
     }
 }

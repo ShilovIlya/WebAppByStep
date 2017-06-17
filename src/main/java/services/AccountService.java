@@ -14,8 +14,8 @@ public class AccountService {
         this.sessionIdToUser = new HashMap<>();
     }
 
-    public long addNewUser(String login, String password, String email) {
-        return dbService.addUser(login, password, email);
+    public Long addNewUser(String login, String password, String email) {
+        return dbService.getUserByLogin(login) == null ? dbService.addUser(login, password, email) : null;
     }
 
     public User getUserByLogin(String login) {

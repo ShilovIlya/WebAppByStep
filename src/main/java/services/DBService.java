@@ -14,4 +14,6 @@ public interface DBService {
 
     public void cleanUp();
 
+    public void initialize();
+
 }

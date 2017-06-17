@@ -29,14 +29,12 @@ public class SignUpServlet extends HttpServlet{
             return;
         }
 
-        User user = accountService.getUserByLogin(login);
-        //if user already exist
-        if (user != null) {
+        Long id = accountService.addNewUser(login, password, email);
+        if (id == null) { //if user already exist
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
-        long id = accountService.addNewUser(login, password, email);
         User newUser = new User(id, login, password, email);
         accountService.addSession(request.getSession().getId(), newUser);
         Gson gson = new Gson();

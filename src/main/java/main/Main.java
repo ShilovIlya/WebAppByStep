@@ -16,9 +16,12 @@ public class Main {
     public static void main(String[] args) {
         DBService dbService = new JDBCService();
         dbService.printConnectInfo();
+        dbService.initialize();
+        dbService.cleanUp();
+        dbService.initialize();
 
         AccountService accountService = new AccountService(dbService);
-        long id = accountService.addNewUser("admin", "admin", "admin@gmail.com");
+        Long id = accountService.addNewUser("admin", "admin", "admin@gmail.com");
         System.out.println("id of new user is " + id);
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(new SignInServlet(accountService)), "/signin");
@@ -32,8 +35,6 @@ public class Main {
 
         Server server = new Server(8880);
         server.setHandler(handlers);
-
-        dbService.cleanUp();
         try {
             server.start();
             server.join();

@@ -16,10 +16,11 @@ public class JDBCService implements DBService {
 
     public JDBCService() {
         this.connection = getH2Connection();
+    }
+
+    public void initialize() {
         try {
             UsersDAO dao = new UsersDAO(connection);
-            dao.createTable();
-            dao.dropTable();
             dao.createTable();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -64,9 +65,9 @@ public class JDBCService implements DBService {
         try {
             UsersDAO usersDAO = new UsersDAO(connection);
             System.out.println(usersDAO.selectAll());
-            System.out.println(usersDAO.describeTable());
             return usersDAO.getUserByLogin(login);
         } catch (SQLException e) {
+            System.out.println("Login is not exist.");
             e.printStackTrace();
         }
         return null;
